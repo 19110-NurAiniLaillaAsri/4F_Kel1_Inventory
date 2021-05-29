@@ -1,11 +1,9 @@
 <?php 
 require 'function.php';
-
  ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +13,8 @@ require 'function.php';
     <link rel="stylesheet" href="css/inventory.css">
 </head>
 
-<!-- Sidebar -->
 <body>
+<!-- Sidebar -->
 	<input type="checkbox" id="nav-toggle"> 
 	<div class="sidebar">
 		<div class="sidebar-brand">
@@ -112,25 +110,26 @@ require 'function.php';
     						<table class="table table-bordered overflow-scroll" id="dataTable" width="100%">
     							<thead>
     								<tr>
-    									<th>No</th>
-    									<th>Id Barang</th>
-    									<th>Tanggal</th>
-    									<th>Nama Barang</th>
-    									<th>Stok</th>
-    									<th>Supplier</th>
-    									<th>Aksi</th>
+    									<th style="width: 5%;">No</th>
+    									<th style="width: 10%;">Id Barang</th>
+    									<th style="width: 15%;">Tanggal</th>
+    									<th style="width: 30%;">Nama Barang</th>
+    									<th style="width: 5%;">Stok</th>
+    									<th style="width: 15%;">Supplier</th>
+    									<th style="width: 20%;">Aksi</th>
     								</tr>
     							</thead>
     							<tbody>
                                    <?php
                                    $i = 1;
                                     $getdata = mysqli_query($koneksi, "SELECT * FROM masuk m, stok = s where s.id_barang = m.id_barang");
-                                    while($fetcharray=mysqli_fetch_array($getdata)){
-                                        $id_barang = $fetcharray['id_barang'];
-                                        $tanggal = $fetcharray['tanggal'];
-                                        $nama_barang = $fetcharray['nama_barang'];
-                                        $quantitas = $fetcharray['quantitas'];
-                                        $supplier = $fetcharray['supplier'];
+                                    while($row=mysqli_fetch_array($getdata)){
+                                        $id_masuk = $row['id_masuk'];
+                                        $id_barang = $row['id_barang'];
+                                        $tanggal = $row['tanggal'];
+                                        $nama_barang = $row['nama_barang'];
+                                        $quantitas = $row['quantitas'];
+                                        $supplier = $row['supplier'];
                                     ?>
                                     <tr>
                                         <td><?=$i;?></td>
@@ -140,9 +139,58 @@ require 'function.php';
                                         <td><?=$quantitas;?></td>
                                         <td><?=$supplier;?></td>
                                         <td>
-                                            <a class="btn btn-warning"><i class="far fa-edit"></i></a>
-                                            <a class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                                            <!-- <a class="btn btn-warning"><i class="far fa-edit"></i></a>
+                                            <a class="btn btn-danger"><i class="far fa-trash-alt"></i></a> -->
+
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$id_masuk;?>"><i class="far fa-edit"></i> Edit </button>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$id_masuk;?>"><i class="far fa-trash-alt"></i> Hapus </button>
                                         </td>
+<!-- Modal Edit Barang -->
+                                        <form action="" method="POST">
+                                        <div class="modal fade" id="edit<?=$id_masuk;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Edit Data Barang Masuk</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input class="form-control" type="text" name="id_barang" value="<?=$id_barang;?>" aria-label="readonly input example" readonly><br>
+                                                        <input class="form-control" type="text" name="nama_barang" value="<?=$nama_barang;?>" aria-label="readonly input example" readonly><br>
+                                                        <input type="text" name="quantitas" value="<?=$quantitas;?>" class="form-control" required><br>
+                                                        <input type="text" name="supplier" value="<?=$supplier;?>" class="form-control" required><br>
+                                                        <input type="hidden" name="id_barang" value="<?=$id_barang;?>">
+                                                        <input type="hidden" name="id_masuk" value="<?=$id_masuk;?>">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="Submit" class="btn btn-primary" name="editmasuk">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </form>
+<!-- Modal Hapus Barang -->
+                                        <form action="" method="POST">
+                                        <div class="modal fade" id="delete<?=$id_masuk;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data Barang</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Apakah Anda yakin ingin menghapus data <?=$nama_barang;?>
+                                                        <input type="hidden" name="id_barang" value="<?=$id_barang;?>">
+                                                        <input type="hidden" name="quantitas" value="<?=$quantitas;?>">
+                                                        <input type="hidden" name="id_masuk" value="<?=$id_masuk;?>">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="Submit" class="btn btn-danger" name="hapusbarangmasuk">Hapus</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </form>
                                     </tr>
                                     <?php $i++; ?>
                                     <?php
@@ -170,7 +218,6 @@ require 'function.php';
     		</div>
 		</main>
 	</div>
-
 <!-- Script -->
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/bootstrap.js"></script>
