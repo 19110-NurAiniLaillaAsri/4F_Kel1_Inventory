@@ -2,12 +2,6 @@
 session_start();
 //membuat koneksi database
 $koneksi = mysqli_connect("localhost","root","","stokbarang") or die("Gagal");
-//cek koneksi
-// if($koneksi){
-// 	echo "Berhasil";
-// 	echo "Koneksi database gagal : " . mysqli_connect_error();
-// }
-
 
 //LOGIN
 if (isset($_POST['login'])) {
@@ -138,7 +132,101 @@ if (isset($_POST['barangkeluar'])) {
 	}
 }
 
-//EDIT AKUN blm selesai error Duplicate entry '1' for key 'PRIMARY'
+//EDIT DATA BARANG
+if (isset($_POST['editbarang'])) {
+	$id_barang = $_POST['id_barang'];
+	$nama_barang = $_POST['nama_barang'];
+
+	$edit = mysqli_query($koneksi, "UPDATE stok SET nama_barang='$nama_barang' WHERE id_barang='$id_barang'");
+	if ($edit) {
+		echo "<script>alert('Data barang berhasil diperbarui!')window.location.replace('stok.php');</script>";
+	} else {
+		// echo "<script>alert('Data barang gagal diperbarui!')
+		// window.location.replace('stok.php');</script>";
+		die("Connection failed: " . mysqli_connect_error());
+	}
+}
+
+//HAPUS DATA BARANG
+if (isset($_POST['hapusbarang'])) {
+	$id_barang = $_POST['id_barang'];
+
+	$delete = mysqli_query($koneksi, "DELETE FROM stok WHERE id_barang='$id_barang'");
+	if ($delete) {
+		echo "<script>alert('Data barang berhasil diperbarui!')window.location.replace('stok.php');</script>";
+	} else {
+		// echo "<script>alert('Data barang gagal diperbarui!')
+		// window.location.replace('stok.php');</script>";
+		die("Connection failed: Gagal Delete " . mysqli_connect_error());
+	}
+}
+
+//EDIT DATA BARANG MASUK
+if (isset($_POST['editmasuk'])) {
+	$id_barang = $_POST['id_barang'];
+	$id_masuk = $_POST['id_masuk'];
+	$quantitas = $_POST['quantitas'];
+	$supplier = $_POST['supplier'];
+
+	$datastok = mysqli_query($koneksi, "SELECT * FROM stok WHERE id_barang='$id_barang'");
+	$stok = mysqli_fetch_array($datastok);
+	$stoknow = $stok['stok'];
+
+	$datamasuk = mysqli_query($koneksi, "SELECT * FROM masuk WHERE id_masuk='$id_masuk'");
+	$masuk = mysqli_fetch_array($datamasuk);
+	$qtynow = $masuk['quantitas'];
+
+	if($quantitas > $qtynow){
+		$selisih = $quantitas-$qtynow;
+		$tambah = $stoknow+$selisih;
+		$updatestok = mysqli_query($koneksi, "UPDATE stok SET stok='$tambah' WHERE id_barang='$id_barang'");
+		$updatemasuk = mysqli_query($koneksi, "UPDATE masuk SET quantitas='$quantitas', supplier='$supplier' WHERE id_masuk='$id_masuk'");
+		if ($updatestok && $updatemasuk) {
+			echo "<script>alert('Data barang berhasil diperbarui!')window.location.replace('masuk.php');</script>";
+		} else {
+			// echo "<script>alert('Data barang gagal diperbarui!')
+				// window.location.replace('masuk.php');</script>";
+			die("Connection failed: Gagal Update input>data " . mysqli_connect_error());
+		}
+	} else {
+		$selisih = $qtynow - $quantitas;
+		$kurang = $stoknow - $selisih;
+		$updatestok = mysqli_query($koneksi, "UPDATE stok SET stok='$kurang' WHERE id_barang='$id_barang'");
+		$updatemasuk = mysqli_query($koneksi, "UPDATE masuk SET quantitas='$quantitas', supplier='$supplier' WHERE id_masuk='$id_masuk'");
+		if ($updatestok && $updatemasuk) {
+			echo "<script>alert('Data barang berhasil diperbarui!')window.location.replace('masuk.php');</script>";
+		} else {
+			// echo "<script>alert('Data barang gagal diperbarui!')
+				// window.location.replace('masuk.php');</script>";
+			die("Connection failed: Gagal Update input<data " . mysqli_connect_error());
+		}
+	}
+}
+
+//HAPUS DATA BARANG MASUK
+if (isset($_POST['hapusbarangmasuk'])) {
+	$id_barang = $_POST['id_barang'];
+	$quantitas = $_POST['quantitas'];
+	$id_masuk = $_POST['id_masuk'];
+
+	$datastok = mysqli_query($koneksi, "SELECT * FROM stok WHERE id_barang='$id_barang'");
+	$stok = mysqli_fetch_array($datastok);
+	$stoknow = $stok['stok'];
+
+	$selisih = $stoknow - $quantitas;
+
+	$update = mysqli_query($koneksi, "UPDATE stok SET stok='$selisih' WHERE id_barang='$id_barang'");
+	$delete = mysqli_query($koneksi, "DELETE FROM masuk WHERE id_masuk='$id_masuk'");
+	if ($update && $delete) {
+		echo "<script>alert('Data barang berhasil dihapus!')window.location.replace('masuk.php');</script>";
+	} else {
+		// echo "<script>alert('Data barang gagal diperbarui!')
+		// window.location.replace('masuk.php');</script>";
+			die("Connection failed: Gagal Hapus " . mysqli_connect_error());
+	}
+}
+
+//EDIT AKUN
 $id_userlama = $_SESSION['id_user'];
 //$id_userlama = $_GET['id_user'];
 $data = mysqli_query($koneksi, "SELECT * FROM user WHERE id_user='$id_userlama'");
