@@ -14,8 +14,8 @@ require 'cek.php';
     <link rel="stylesheet" href="css/inventory.css">
 </head>
 
-<!-- Sidebar -->
 <body>
+<!-- Sidebar -->
 	<input type="checkbox" id="nav-toggle"> 
 	<div class="sidebar">
 		<div class="sidebar-brand">
@@ -25,13 +25,13 @@ require 'cek.php';
 		<div class="sidebar-menu">
 			<ul>
 				<li>
-					<a href="stok.php" class="active" style="text-decoration: none;"><i class="fas fa-table"></i><span>Stok Barang</span></a>
+					<a href="stok.php" class="active" style="text-decoration: none;"><i class="fas fa-table me-2"></i><span>Stok Barang</span></a>
 				</li>
 				<li>
 					<a href="masuk.php" style="text-decoration: none;"><i class="fas fa-table me-2"></i><span>Barang Masuk</span></a>
 				</li>
 				<li>
-                    <a href="keluar.php" style="text-decoration: none;"><i class="fas fa-table me-2"></i><span>Barang Keluar</span></a>
+          <a href="keluar.php" style="text-decoration: none;"><i class="fas fa-table me-2"></i><span>Barang Keluar</span></a>
 				</li>
 			</ul>
 		</div>
@@ -45,18 +45,17 @@ require 'cek.php';
 				</label>
 				Stok Barang 
 			</h2>
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i><?= ucfirst($_SESSION['nama_user']);?></a>
 
-            <div class="dropdown">
-              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i><?= ucfirst($_SESSION['nama_user']);?></a>
-
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="editakun.php">Edit Akun</a></li>
-                <div class="dropdown-divider"></div>
-                <li><a class="dropdown-item" href="ubahsandi.php">Ubah Kata Sandi</a></li>
-                <div class="dropdown-divider"></div>
-                <li><a class="dropdown-item" href="logout.php" name="logout">Logout</a></li>
-              </ul>
-            </div>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item" href="editakun.php">Edit Akun</a></li>
+          <div class="dropdown-divider"></div>
+          <li><a class="dropdown-item" href="ubahsandi.php">Ubah Kata Sandi</a></li>
+          <div class="dropdown-divider"></div>
+          <li><a class="dropdown-item" href="logout.php" name="logout">Logout</a></li>
+        </ul>
+      </div>
 		</header>
 <!-- Form Barang -->
 		<main>
@@ -64,93 +63,128 @@ require 'cek.php';
     			<div class="card mb-4">
     				<div class="card-header">
     					<!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Tambah Jenis Barang </button>
-
-                        <!-- Modal -->
-                        <form action="" method="POST">
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Tambah Jenis Barang</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                    <input type="text" name="id_barang" placeholder="ID Barang" class="form-control" required><br>
-                                    <input type="text" name="nama_barang" placeholder="Nama Barang" class="form-control" required><br>
-                                    <input type="text" name="supplier" placeholder="Supplier" class="form-control" required><br>
-                                    <input type="text" name="stok" placeholder="Quantitas" class="form-control" required><br>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="Submit" class="btn btn-primary" name="barangbaru">Submit</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        </form>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Tambah Jenis Barang </button>
+<!-- Modal barang Baru -->
+              <form action="" method="POST">
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Tambah Jenis Barang</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <input type="text" name="id_barang" placeholder="ID Barang" class="form-control" required><br>
+                      <input type="text" name="nama_barang" placeholder="Nama Barang" class="form-control" required><br>
+                      <input type="text" name="supplier" placeholder="Supplier" class="form-control" required><br>
+                      <input type="text" name="stok" placeholder="Quantitas" class="form-control" required><br>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="Submit" class="btn btn-primary" name="barangbaru">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </form>
     				</div>
 <!-- Tabel -->
     				<div class="card-body">
-                        <!-- Note Stok Habis -->
-                        <?php
-                        $getdata = mysqli_query($koneksi, "SELECT * FROM stok where stok < 1");
+              <!-- Note Stok Habis -->
+              <?php
+                $getdata = mysqli_query($koneksi, "SELECT * FROM stok where stok < 1");
 
-                        while($fetcharray=mysqli_fetch_array($getdata)){
-                            $barang = $fetcharray['nama_barang'];
-                                
-
-                        ?>
-                        <div class="alert alert-danger alert-dismissible">
-                            
-                            <strong>Perhatian!</strong> Stok <?=$barang;?> sudah habis.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        <?php
-                          }
-                        ?>
+                while($fetcharray=mysqli_fetch_array($getdata)){
+                  $barang = $fetcharray['nama_barang'];
+              ?>
+              <div class="alert alert-danger alert-dismissible">
+                <strong>Perhatian!</strong> Stok <?=$barang;?> sudah habis.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <?php
+                }
+              ?>
     					<div class="table-responsive-xxl">
     						<table class="table table-bordered overflow-scroll" id="dataTable" width="100%">
     							<thead>
     								<tr>
-    									<th>No</th>
-    									<th>Id Barang</th>
-    									<th>Tanggal</th>
-    									<th>Nama Barang</th>
-    									<th>Stok</th>
-    									<th>Supplier</th>
-    									<th>Aksi</th>
+    									<th style="width: 5%;">No</th>
+    									<th style="width: 15%;">Id Barang</th>
+    									<th style="width: 15%;">Tanggal</th>
+    									<th style="width: 35%;">Nama Barang</th>
+    									<th style="width: 10%;">Stok</th>
+    									<th style="width: 20%;">Aksi</th>
     								</tr>
     							</thead>
     							<tbody>
-                                    <?php
-                                    $i = 1;
-                                    $getdata = mysqli_query($koneksi, "SELECT * FROM stok");
-                                    while($fetcharray=mysqli_fetch_array($getdata)){
-                                        $id_barang = $fetcharray['id_barang'];
-                                        $tanggal = $fetcharray['tanggal'];
-                                        $nama_barang = $fetcharray['nama_barang'];
-                                        $stok = $fetcharray['stok'];
-                                        $supplier = $fetcharray['supplier'];
-                                    ?>
-                                    <tr>
-                                       <td><?=$i;?></td>
-                                        <td><?=$id_barang;?></td>
-                                        <td><?= date("d F Y", strtotime($tanggal));?></td>
-                                        <td><?=$nama_barang;?></td>
-                                        <td><?=$stok;?></td>
-                                        <td><?=$supplier;?></td>
-                                        <td>
-                                            <a class="btn btn-warning"><i class="far fa-edit"></i></a>
-                                            <a class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
-                                        </td>
-                                    </tr>
-                                    <?php $i++; ?>
-                                    <?php
-                                    };
-                                    
-                                    ?>
-                                </tbody>
+                    <?php
+                      $i = 1;
+                      $getdata = mysqli_query($koneksi, "SELECT * FROM stok");
+                      while($row=mysqli_fetch_array($getdata)){
+                      $id_barang = $row['id_barang'];
+                      $tanggal = $row['tanggal'];
+                      $nama_barang = $row['nama_barang'];
+                      $stok = $row['stok'];
+                      $supplier = $row['supplier'];
+                    ?>
+                    <tr>
+                      <td><?=$i;?></td>
+                      <td><?=$id_barang;?></td>
+                      <td><?= date("d F Y", strtotime($tanggal));?></td>
+                      <td><?=$nama_barang;?></td>
+                      <td><?=$stok;?></td>
+                      <td>
+
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$id_barang;?>"><i class="far fa-edit"></i> Edit </button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$id_barang;?>"><i class="far fa-trash-alt"></i> Hapus </button>
+                      </td>
+<!-- Modal Edit Barang -->
+                      <form action="" method="POST">
+                      <div class="modal fade" id="edit<?=$id_barang;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Edit Data Barang</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <input class="form-control" type="text" name="id_barang" value="<?=$id_barang;?>" aria-label="readonly input example" readonly><br>
+                              <input type="text" name="nama_barang" value="<?=$nama_barang;?>" class="form-control" required><br>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="Submit" class="btn btn-primary" name="editbarang">Submit</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+<!-- Modal Hapus Barang -->
+                      <form action="" method="POST">
+                      <div class="modal fade" id="delete<?=$id_barang;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Hapus Data Barang</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Apakah Anda yakin ingin menghapus data <?=$nama_barang;?>
+                              <input type="hidden" name="id_barang" value="<?=$id_barang;?>">
+                            </div>
+                            <div class="modal-footer">
+                              <button type="Submit" class="btn btn-danger" name="hapusbarang">Hapus</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+
+                    </tr>
+                    <?php $i++; ?>
+                    <?php
+                    };
+                    ?>
+                  </tbody>
     						</table>
     					</div>
     					<!-- <nav aria-label="Page navigation example">
