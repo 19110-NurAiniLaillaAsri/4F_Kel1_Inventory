@@ -1,5 +1,15 @@
 <?php  
 include 'function.php';
+require 'cek.php';
+$id_user = $_SESSION['id_user'];
+$getdata = mysqli_query($koneksi, "SELECT * FROM user WHERE id_user='$id_user'");
+while ($row = mysqli_fetch_array($getdata)){
+    $id_user = $row['id_user'];
+    $nama_user = $row['nama_user'];
+    $no_telp = $row['no_telp'];
+    $email = $row['email'];
+    $password = $row['password'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,12 +19,13 @@ include 'function.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Edit Akun</title>
+    <title>Ubah Sandi</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/inventory.css">
 </head>
 
 <body>
+<!-- Sidebar -->
 	<input type="checkbox" id="nav-toggle"> 
 	<div class="sidebar">
 		<div class="sidebar-brand">
@@ -24,18 +35,18 @@ include 'function.php';
 		<div class="sidebar-menu">
 			<ul>
 				<li>
-					<a href="stok.php" style="text-decoration: none;"><span class="fas fa-table"></span><span>    Stok Barang</span></a>
+					<a href="stok.php" style="text-decoration: none;"><span class="fas fa-table me-2"></span><span>Stok Barang</span></a>
 				</li>
 				<li>
-					<a href="masuk.php" style="text-decoration: none;"><span class="fas fa-table"></span><span>   Barang Masuk</span></a>
+					<a href="masuk.php" style="text-decoration: none;"><span class="fas fa-table me-2"></span><span>Barang Masuk</span></a>
 				</li>
 				<li>
-					<a href="keluar.php" style="text-decoration: none;"><span class="fas fa-table"></span><span>  Barang Keluar</span></a>
+					<a href="keluar.php" style="text-decoration: none;"><span class="fas fa-table me-2"></span><span>Barang Keluar</span></a>
 				</li>
 			</ul>
 		</div>
 	</div>
-
+<!-- Navbar -->
 	<div class="main-content">
 		<header>
 			<h2>
@@ -57,7 +68,7 @@ include 'function.php';
               </ul>
             </div>
 		</header>
-
+<!-- Form -->
 		<main>
     		<div class="container-fluid">
     			<div class="card mb-4">
@@ -68,19 +79,21 @@ include 'function.php';
     					<form method="POST">
                             <div class="form-group">
                                 <label for="id_user">ID User</label>
-                                <input type="text" name="id_user" class="form-control" required>
+                                <input class="form-control" type="text" name="id_barang" value="<?=$id_user;?>" aria-label="readonly input example" readonly><br>
+                                <!-- 
+                                <input type="text" name="id_user" class="form-control" required> -->
                             </div>
                             <div class="form-group">
                                 <label for="password">Password Lama</label>
-                                <input type="password" name="password" class="form-control" required>
+                                <input type="password" name="passInput" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="newpassword">Password Baru</label>
-                                <input type="password" name="newpassword" class="form-control" required>
+                                <input type="password" name="passBaru" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="newpassword">Konfirmasi Password Baru</label>
-                                <input type="password" name="newpassword" class="form-control" required>
+                                <input type="password" name="passBaru2" class="form-control" required>
                             </div>
                             <br>        
                             <div class="form-group form-check">
@@ -88,7 +101,7 @@ include 'function.php';
                                 <label class="form-check-label" for="checkbox">Pastikan data yang Anda isikan benar</label>
                             </div>
                             <br>
-                            <button type="button" class="btn btn-primary" name="updatepassword">
+                            <button type="submit" class="btn btn-primary" name="updatepassword">
                                         Perbarui Password
                             </button>
                                     
