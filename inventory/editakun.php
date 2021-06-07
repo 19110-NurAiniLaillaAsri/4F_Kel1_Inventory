@@ -1,8 +1,9 @@
 <?php  
 include 'function.php';
-// $id_user=$_GET['id_user'];
-// $data=mysqli_query($koneksi, "SELECT * FROM user WHERE id_user='$id_user'") or die (mysqli_error($koneksi));
-// $baris=mysqli_fetch_array($data);
+require 'cek.php';
+$id_user = $_SESSION["id_user"];
+$data = mysqli_query($koneksi, "SELECT * FROM user WHERE id_user='$id_user'");
+$baris = mysqli_fetch_array($data);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,11 +69,6 @@ include 'function.php';
     				</div>
     				<div class="card-body">
     					<form method="POST">
-                            <?php
-                            $id_user = $_SESSION['id_user'];
-                            $data=mysqli_query($koneksi, "SELECT * FROM user WHERE id_user='$id_user'") or die (mysqli_error($koneksi));
-                            $baris=mysqli_fetch_array($data);
-                            ?>
                             <div class="form-group">
                                 <label for="id_user">ID User</label>
                                 <input type="text" name="id_user" class="form-control" value="<?= $baris['id_user']?>" required>
@@ -99,7 +95,7 @@ include 'function.php';
                                 <label class="form-check-label" for="checkbox">Pastikan data yang Anda isikan benar</label>
                             </div>
                             <br>
-                            <button class="btn btn-primary" name="updatedata">Perbarui Data</button>
+                            <button type="submit" class="btn btn-primary" name="updatedata">Perbarui Data</button>
                                     
                         </form>
     				</div>
