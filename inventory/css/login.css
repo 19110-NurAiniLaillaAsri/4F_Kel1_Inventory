@@ -1,0 +1,96 @@
+html,body{
+    height: 100%;
+    background: -webkit-linear-gradient(bottom, #34515e, #f5f5f5);
+    background-repeat: no-repeat;
+}
+.wrapper{
+    height: 100%;
+}
+.content{
+    background-color: white;
+    padding: 4rem 2rem 4rem 2rem;
+    border-radius: 1rem;
+}
+.underline-title {
+      background: -webkit-linear-gradient(right, #494949, #eeeeee);
+      height: 2px;
+      margin: -1.1rem auto 0 auto;
+      width: 89px;
+}
+.form-control{
+    display: block;
+    width: 100%;
+    border-color: #0084ac !important;
+    border-style: solid !important;
+    border-width: 0 0 1px 0 !important;
+    padding: 0px !important;
+    color: #666;
+    height: auto;
+    border-radius: 0;
+}
+.form-control:focus{
+    color: #666;
+    background-color: white;
+    border-color: white;
+    outline: 0;
+    box-shadow: none;
+}
+#signup {
+    color: #34515e;
+    font-family: "Raleway", sans-serif;
+    font-size: 10pt;
+    margin-top: 16px;
+    text-align: center;
+}
+#submit-btn {
+    background: -webkit-linear-gradient(right, #34515e, #bdbdbd);
+    border: none;
+    border-radius: 21px;
+    box-shadow: 0px 1px 8px #34515e;
+    cursor: pointer;
+    color: white;
+    font-family: "Raleway SemiBold", sans-serif;
+    height: 42.3px;
+    margin: 0 auto;
+    margin-top: 50px;
+    transition: 0.25s;
+    width: 153px;
+}
+#submit-btn:hover {
+    box-shadow: 0px 1px 18px #34515e;
+}
+
+/* Simple CSS3 Fade-in Animation */
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+.fadeIn {
+    opacity:0;
+    -webkit-animation:fadeIn ease-in 1;
+    -moz-animation:fadeIn ease-in 1;
+    animation:fadeIn ease-in 1;
+
+    -webkit-animation-fill-mode:forwards;
+    -moz-animation-fill-mode:forwards;
+    animation-fill-mode:forwards;
+
+    -webkit-animation-duration:1s;
+    -moz-animation-duration:1s;
+    animation-duration:1s;
+}
+.fadeIn.first {
+    -webkit-animation-delay: 0.4s;
+    -moz-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+}
+.animated {
+    animation: up-down 2s ease-in-out infinite alternate-reverse both;
+}
+@-webkit-keyframes up-down {
+    from {
+      transform: translateY(10px);
+    }
+    to {
+      transform: translateY(-10px);
+    }
+  }
