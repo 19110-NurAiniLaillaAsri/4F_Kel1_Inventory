@@ -94,7 +94,7 @@ if (isset($_POST['barangmasuk'])) {
 	$stoknow = $getdatastok['stok'];
 	$tambahstok = $stoknow+$quantitas;
 
-	$addtomasuk = mysqli_query($koneksi, "INSERT INTO masuk (id_barang, id_user, tanggal, supplier, quantitas) VALUES ('$jenisbarang','$id_user',NOW(),'$supplier','$quantitas')");
+	$addtomasuk = mysqli_query($koneksi, "INSERT INTO masuk (id_barang, id_user, tgl_masuk, supplier, quantitas) VALUES ('$jenisbarang','$id_user',NOW(),'$supplier','$quantitas')");
 	$updatestokmasuk = mysqli_query($koneksi, "UPDATE stok SET stok = '$tambahstok' WHERE id_barang = '$jenisbarang'");
 	if ($addtomasuk&&$updatestokmasuk) {
 		echo "<script>alert('Barang berhasil ditambahkan!')window.location.replace('masuk.php');</script>";
@@ -118,7 +118,7 @@ if (isset($_POST['barangkeluar'])) {
 	$stoknow = $getdatastok['stok'];
 	$kurangstok = $stoknow-$quantitas;
 
-	$addtokeluar = mysqli_query($koneksi, "INSERT INTO keluar (id_barang, id_user, tanggal, customer, quantitas) VALUES ('$jenisbarang','$id_user',NOW(),'$customer','$quantitas')");
+	$addtokeluar = mysqli_query($koneksi, "INSERT INTO keluar (id_barang, id_user, tgl_keluar, customer, quantitas) VALUES ('$jenisbarang','$id_user',NOW(),'$customer','$quantitas')");
 	$updatestokkeluar = mysqli_query($koneksi, "UPDATE stok SET stok = '$kurangstok' WHERE id_barang = '$jenisbarang'");
 	if ($addtokeluar&&$updatestokkeluar) {
 		echo "<script>alert('Barang berhasil ditambahkan!')window.location.replace('masuk.php');</script>";
