@@ -64,6 +64,7 @@ require 'cek.php';
     				<div class="card-header">
     					<!-- Button trigger modal -->
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Tambah Jenis Barang </button>
+
 <!-- Modal barang Baru -->
               <form action="" method="POST">
               <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -105,101 +106,113 @@ require 'cek.php';
                 }
               ?>
     					<div class="table-responsive-xxl">
-    						<table class="table table-bordered overflow-scroll" id="dataTable" width="100%">
-    							<thead>
-    								<tr>
-    									<th style="width: 5%;">No</th>
-    									<th style="width: 15%;">Id Barang</th>
-    									<th style="width: 15%;">Tanggal</th>
-    									<th style="width: 35%;">Nama Barang</th>
-    									<th style="width: 10%;">Stok</th>
-    									<th style="width: 20%;">Aksi</th>
-    								</tr>
-    							</thead>
-    							<tbody>
-                    <?php
-                      $i = 1;
-                      $getdata = mysqli_query($koneksi, "SELECT * FROM stok");
-                      while($row=mysqli_fetch_array($getdata)){
-                      $id_barang = $row['id_barang'];
-                      $tanggal = $row['tanggal'];
-                      $nama_barang = $row['nama_barang'];
-                      $stok = $row['stok'];
-                      $supplier = $row['supplier'];
-                    ?>
-                    <tr>
-                      <td><?=$i;?></td>
-                      <td><?=$id_barang;?></td>
-                      <td><?= date("d F Y", strtotime($tanggal));?></td>
-                      <td><?=$nama_barang;?></td>
-                      <td><?=$stok;?></td>
-                      <td>
-
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$id_barang;?>"><i class="far fa-edit"></i> Edit </button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$id_barang;?>"><i class="far fa-trash-alt"></i> Hapus </button>
-                      </td>
-<!-- Modal Edit Barang -->
-                      <form action="" method="POST">
-                      <div class="modal fade" id="edit<?=$id_barang;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Edit Data Barang</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <input class="form-control" type="text" name="id_barang" value="<?=$id_barang;?>" aria-label="readonly input example" readonly><br>
-                              <input type="text" name="nama_barang" value="<?=$nama_barang;?>" class="form-control" required><br>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="Submit" class="btn btn-primary" name="editbarang">Submit</button>
+                <div id="dataTable_wrapper" class="dataTable_wrapper">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <a type="button" target="_blank" href="cetakstok.php" class="btn btn-secondary">Cetak Laporan</a>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                     <div id="dataTable_filter" class="dataTable_filter">
+                        <div class="container-fluid" style="max-width: 400px;">
+                            <form action="<?php echo $_SERVER["PHP_SELF"];?>" class="d-flex" method="GET">
+                                <input class="form-control me-2" type="search" name="cari" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 mt-3">
+                    <table class="table table-bordered overflow-scroll" id="dataTable" width="100%">
+                      <thead>
+                        <tr>
+                          <th style="width: 5%;">No</th>
+                          <th style="width: 15%;">Id Barang</th>
+                          <th style="width: 15%;">Tanggal</th>
+                          <th style="width: 35%;">Nama Barang</th>
+                          <th style="width: 10%;">Stok</th>
+                          <th style="width: 20%;">Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $i = 1;
+                          if (isset($_GET['cari'])) {
+                            $cari = $_GET['cari'];
+                            $tgl = date("Y-m-d", strtotime($cari));
+                            $getdata = mysqli_query($koneksi, "SELECT * FROM stok WHERE id_barang like '%".$cari."%' OR tanggal like '%".$tgl."%' OR nama_barang like '%".$cari."%' OR stok like '%".$cari."%' ");
+                          } else {
+                            $getdata = mysqli_query($koneksi, "SELECT * FROM stok");
+                          }
+                          while($row=mysqli_fetch_array($getdata)){
+                          $id_barang = $row['id_barang'];
+                          $tanggal = $row['tanggal'];
+                          $nama_barang = $row['nama_barang'];
+                          $stok = $row['stok'];
+                          $supplier = $row['supplier'];
+                        ?>
+                        <tr>
+                          <td><?=$i;?></td>
+                          <td><?=$id_barang;?></td>
+                          <td><?= date("d F Y", strtotime($tanggal));?></td>
+                          <td><?=$nama_barang;?></td>
+                          <td><?=$stok;?></td>
+                          <td>
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$id_barang;?>"><i class="far fa-edit" style="width: 50px;"></i> Edit </button><br>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$id_barang;?>"><i class="far fa-trash-alt" style="width: 30px;"></i> Hapus </button>
+                          </td>
+    <!-- Modal Edit Barang -->
+                          <form action="" method="POST">
+                          <div class="modal fade" id="edit<?=$id_barang;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Edit Data Barang</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <input class="form-control" type="text" name="id_barang" value="<?=$id_barang;?>" aria-label="readonly input example" readonly><br>
+                                  <input type="text" name="nama_barang" value="<?=$nama_barang;?>" class="form-control" required><br>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="Submit" class="btn btn-primary" name="editbarang">Submit</button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      </form>
-<!-- Modal Hapus Barang -->
-                      <form action="" method="POST">
-                      <div class="modal fade" id="delete<?=$id_barang;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Hapus Data Barang</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              Apakah Anda yakin ingin menghapus data <?=$nama_barang;?>
-                              <input type="hidden" name="id_barang" value="<?=$id_barang;?>">
-                            </div>
-                            <div class="modal-footer">
-                              <button type="Submit" class="btn btn-danger" name="hapusbarang">Hapus</button>
+                          </form>
+    <!-- Modal Hapus Barang -->
+                          <form action="" method="POST">
+                          <div class="modal fade" id="delete<?=$id_barang;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Hapus Data Barang</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  Apakah Anda yakin ingin menghapus data <?=$nama_barang;?>
+                                  <input type="hidden" name="id_barang" value="<?=$id_barang;?>">
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="Submit" class="btn btn-danger" name="hapusbarang">Hapus</button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      </form>
+                          </form>
 
-                    </tr>
-                    <?php $i++; ?>
-                    <?php
-                    };
-                    ?>
-                  </tbody>
-    						</table>
+                        </tr>
+                        <?php $i++; ?>
+                        <?php
+                        };
+                        ?>
+                      </tbody>
+                    </table>
+                    </div>
+                  </div>
+                </div>
     					</div>
-    					<!-- <nav aria-label="Page navigation example">
-						  <ul class="pagination justify-content-end">
-						    <li class="page-item disabled">
-						      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-						    </li>
-						    <li class="page-item"><a class="page-link" href="#">1</a></li>
-						    <li class="page-item"><a class="page-link" href="#">2</a></li>
-						    <li class="page-item"><a class="page-link" href="#">3</a></li>
-						    <li class="page-item">
-						      <a class="page-link" href="#">Next</a>
-						    </li>
-						  </ul>
-						</nav> -->
     				</div>
     			</div>
     		</div>
